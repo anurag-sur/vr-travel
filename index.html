@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>VR Travel Gallery</title>
 
-  <!-- A-Frame (VR + Stereo ready) -->
+  <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,31 +26,49 @@
   <a-entity light="type: ambient; intensity: 0.6"></a-entity>
   <a-entity light="type: directional; intensity: 0.9" position="2 4 3"></a-entity>
 
-  <!-- World (raise/lower THIS, not the camera) -->
+  <!-- World -->
   <a-entity id="world" position="0 0 0">
-
-      <a-entity gltf-model="car/scene.gltf"
-            position="0 1.5 -3"
-            scale="1 1 1"></a-entity>
-
-  <a-entity gltf-model="helicopter/scene.gltf"
-            position="2 1.5 -2"
-            rotation="0 -45 0"
-            scale="1 1 1"></a-entity>
-
-  <a-entity gltf-model="house_boat/scene.gltf"
-            position="3 1.5 0"
-            rotation="0 -90 0"
-            scale="1 1 1"></a-entity>
-
-  <a-entity gltf-model="submarine/scene.gltf"
-            position="2 1.5 2"
-            rotation="0 -135 0"
-            scale="1 1 1"></a-entity>
-
+    <a-entity id="circle-group"></a-entity>
   </a-entity>
 
 </a-scene>
-  
+
+<script>
+  const models = [
+    "car/scene.gltf",
+    "helicopter/scene.gltf",
+    "house_boat/scene.gltf",
+    "bike/scene.gltf",
+    "plane/scene.gltf",
+    "mustang/scene.gltf",
+    "vespa/scene.gltf",
+    "submarine/scene.gltf"
+  ];
+
+  const radius = 4;      // circle size
+  const height = 1.5;   // model height
+
+  const group = document.querySelector("#circle-group");
+
+  models.forEach((model, i) => {
+    const angle = (i / models.length) * Math.PI * 2;
+
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
+
+    const entity = document.createElement("a-entity");
+    entity.setAttribute("gltf-model", model);
+    entity.setAttribute("position", `${x} ${height} ${z}`);
+
+    // face center
+    const rotationY = (-angle * 180 / Math.PI) + 90;
+    entity.setAttribute("rotation", `0 ${rotationY} 0`);
+
+    entity.setAttribute("scale", "1 1 1");
+
+    group.appendChild(entity);
+  });
+</script>
+
 </body>
 </html>
