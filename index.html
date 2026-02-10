@@ -27,44 +27,44 @@
   <a-entity light="type: directional; intensity: 0.9" position="2 4 3"></a-entity>
 
   <!-- World -->
-  <a-entity id="world" position="0 0 0">
+  <a-entity id="world">
     <a-entity id="circle-group"></a-entity>
   </a-entity>
 
 </a-scene>
 
 <script>
-  const models = [
-    "car/scene.gltf",
-    "helicopter/scene.gltf",
-    "house_boat/scene.gltf",
-    "bike/scene.gltf",
-    "plane/scene.gltf",
-    "mustang/scene.gltf",
-    "vespa/scene.gltf",
-    "submarine/scene.gltf"
+  const items = [
+    { id: "car",        model: "car/scene.gltf",        scale: 0.2 },
+    { id: "helicopter", model: "helicopter/scene.gltf", scale: 1.5 },
+    { id: "houseboat",  model: "house_boat/scene.gltf", scale: 0.5 },
+    { id: "bike",       model: "bike/scene.gltf",       scale: 1 },
+    { id: "plane",      model: "plane/scene.gltf",      scale: 1 },
+    { id: "mustang",    model: "mustang/scene.gltf",    scale: 1 },
+    { id: "vespa",      model: "vespa/scene.gltf",      scale: 1 },
+    { id: "submarine",  model: "submarine/scene.gltf",  scale: 0.5 }
   ];
 
-  const radius = 4;      // circle size
-  const height = 1.5;   // model height
+  const radius = 4;
+  const height = 1.5;
 
   const group = document.querySelector("#circle-group");
 
-  models.forEach((model, i) => {
-    const angle = (i / models.length) * Math.PI * 2;
+  items.forEach((item, i) => {
+    const angle = (i / items.length) * Math.PI * 2;
 
     const x = Math.cos(angle) * radius;
     const z = Math.sin(angle) * radius;
 
     const entity = document.createElement("a-entity");
-    entity.setAttribute("gltf-model", model);
+    entity.setAttribute("id", item.id);
+    entity.setAttribute("gltf-model", item.model);
     entity.setAttribute("position", `${x} ${height} ${z}`);
+    entity.setAttribute("scale", `${item.scale} ${item.scale} ${item.scale}`);
 
-    // face center
+    // face the center
     const rotationY = (-angle * 180 / Math.PI) + 90;
     entity.setAttribute("rotation", `0 ${rotationY} 0`);
-
-    entity.setAttribute("scale", "1 1 1");
 
     group.appendChild(entity);
   });
