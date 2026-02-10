@@ -35,14 +35,14 @@
 
 <script>
   const items = [
-    { id: "car",        model: "car/scene.gltf",        scale: 0.1 },
-    { id: "helicopter", model: "helicopter/scene.gltf", scale: 0.7 },
-    { id: "houseboat",  model: "house_boat/scene.gltf", scale: 0.1 },
-    { id: "bike",       model: "bike/scene.gltf",       scale: 1.0 },
-    { id: "plane",      model: "plane/scene.gltf",      scale: 1.0 },
-    { id: "mustang",    model: "mustang/scene.gltf",    scale: 50 },
-    { id: "vespa",      model: "vespa/scene.gltf",      scale: 1.7 },
-    { id: "submarine",  model: "submarine/scene.gltf",  scale: 0.2 }
+    { id: "car",        model: "car/scene.gltf",        scale: 0.1, faceOffset: 180 },
+    { id: "helicopter", model: "helicopter/scene.gltf", scale: 0.7, faceOffset: 90 },
+    { id: "houseboat",  model: "house_boat/scene.gltf", scale: 0.1, faceOffset: 0 },
+    { id: "bike",       model: "bike/scene.gltf",       scale: 1.0, faceOffset: 45 },
+    { id: "plane",      model: "plane/scene.gltf",      scale: 1.0, faceOffset: 180 },
+    { id: "mustang",    model: "mustang/scene.gltf",    scale: 50,  faceOffset: 180 },
+    { id: "vespa",      model: "vespa/scene.gltf",      scale: 1.7, faceOffset: -180 },
+    { id: "submarine",  model: "submarine/scene.gltf",  scale: 0.2, faceOffset: 180 }
   ];
 
   const radius = 4;
@@ -62,9 +62,11 @@
     entity.setAttribute("position", `${x} ${height} ${z}`);
     entity.setAttribute("scale", `${item.scale} ${item.scale} ${item.scale}`);
 
-    // face the center
-    const rotationY = (-angle * 180 / Math.PI) + 90;
-    entity.setAttribute("rotation", `0 ${rotationY} 0`);
+    // Base rotation (faces center) + custom per-item offset
+    const baseRotation = (-angle * 180 / Math.PI) + 90;
+    const finalRotation = baseRotation + (item.faceOffset || 0);
+
+    entity.setAttribute("rotation", `0 ${finalRotation} 0`);
 
     group.appendChild(entity);
   });
